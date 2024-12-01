@@ -9,7 +9,7 @@ import (
 	"github.com/yeldiRium/advent-of-code/2024/day1/common"
 )
 
-func TestCompareLocationIdLists(t *testing.T) {
+func TestDistance(t *testing.T) {
 	t.Run("succeeds for various inputs", func(t *testing.T) {
 		type testCase struct {
 			leftList         []int
@@ -31,7 +31,7 @@ func TestCompareLocationIdLists(t *testing.T) {
 		}
 		for i, testCase := range testCases {
 			t.Run(fmt.Sprintf("Test case %d", i), func(t *testing.T) {
-				actualDistance := common.CompareLocationIdLists(testCase.leftList, testCase.rightList)
+				actualDistance := common.Distance(testCase.leftList, testCase.rightList)
 
 				assert.Equal(t, testCase.expectedDistance, actualDistance)
 			})
@@ -40,7 +40,7 @@ func TestCompareLocationIdLists(t *testing.T) {
 
 	t.Run("panics if the input lists aren't the same length.", func(t *testing.T) {
 		assert.Panics(t, func() {
-			common.CompareLocationIdLists([]int{1, 2}, []int{1, 2, 3})
+			common.Distance([]int{1, 2}, []int{1, 2, 3})
 		})
 	})
 }

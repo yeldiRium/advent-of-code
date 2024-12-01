@@ -7,7 +7,6 @@ import (
 	"github.com/yeldiRium/advent-of-code/2024/day1/common"
 )
 
-
 func main() {
 	inputFile, err := os.Open("./input.txt")
 	if err != nil {
@@ -20,7 +19,7 @@ func main() {
 		panic(err)
 	}
 
-	distance := common.CompareLocationIdLists(leftList, rightList)
+	distance := common.Distance(leftList, rightList)
 
 	fmt.Printf("%d", distance)
 }

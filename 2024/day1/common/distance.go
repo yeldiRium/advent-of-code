@@ -2,7 +2,7 @@ package common
 
 import "slices"
 
-func CompareLocationIdLists(leftList, rightList []int) int {
+func Distance(leftList, rightList []int) int {
 	if len(leftList) != len(rightList) {
 		panic("input lists must have the same length")
 	}
