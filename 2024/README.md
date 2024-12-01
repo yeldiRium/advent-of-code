@@ -4,3 +4,4 @@
 - [2024's puzzles](https://adventofcode.com/2024)
 
 ## Days
+- [Day 1](./day1)
