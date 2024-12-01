@@ -1,38 +1,13 @@
-package main
+package common
 
 import (
 	"fmt"
 	"io"
-	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
 
-func compareLocationIdLists(leftList, rightList []int) int {
-	if len(leftList) != len(rightList) {
-		panic("input lists must have the same length")
-	}
-
-	slices.Sort(leftList)
-	slices.Sort(rightList)
-
-	distance := 0
-	for i, left := range leftList {
-		right := rightList[i]
-
-		difference := left - right
-		if difference < 0 {
-			difference = -difference
-		}
-
-		distance += difference
-	}
-
-	return distance
-}
-
-func parseInputLists(input io.Reader) (leftList, rightList []int, err error) {
+func ParseInputLists(input io.Reader) (leftList, rightList []int, err error) {
 	rawLists, err := io.ReadAll(input)
 	if err != nil {
 		return nil, nil, err
@@ -64,21 +39,4 @@ func parseInputLists(input io.Reader) (leftList, rightList []int, err error) {
 	}
 
 	return leftList, rightList, nil
-}
-
-func main() {
-	inputFile, err := os.Open("./input.txt")
-	if err != nil {
-		panic(err)
-	}
-	defer inputFile.Close()
-
-	leftList, rightList, err := parseInputLists(inputFile)
-	if err != nil {
-		panic(err)
-	}
-
-	distance := compareLocationIdLists(leftList, rightList)
-
-	fmt.Printf("%d", distance)
 }

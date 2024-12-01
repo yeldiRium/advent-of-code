@@ -1,12 +1,12 @@
-package main
+package common_test
 
 import (
-	"bufio"
-	"bytes"
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/yeldiRium/advent-of-code/2024/day1/common"
 )
 
 func TestCompareLocationIdLists(t *testing.T) {
@@ -31,7 +31,7 @@ func TestCompareLocationIdLists(t *testing.T) {
 		}
 		for i, testCase := range testCases {
 			t.Run(fmt.Sprintf("Test case %d", i), func(t *testing.T) {
-				actualDistance := compareLocationIdLists(testCase.leftList, testCase.rightList)
+				actualDistance := common.CompareLocationIdLists(testCase.leftList, testCase.rightList)
 
 				assert.Equal(t, testCase.expectedDistance, actualDistance)
 			})
@@ -40,18 +40,7 @@ func TestCompareLocationIdLists(t *testing.T) {
 
 	t.Run("panics if the input lists aren't the same length.", func(t *testing.T) {
 		assert.Panics(t, func() {
-			compareLocationIdLists([]int{1, 2}, []int{1, 2, 3})
+			common.CompareLocationIdLists([]int{1, 2}, []int{1, 2, 3})
 		})
-	})
-}
-
-func TestParseInputLists(t *testing.T) {
-	t.Run("succeeds for a valid input file.", func(t *testing.T) {
-		inputFile := bytes.NewBuffer([]byte("1   2\n3   4\n"))
-
-		leftList, rightList, err := parseInputLists(bufio.NewReader(inputFile))
-		assert.NoError(t, err)
-		assert.Equal(t, []int{1, 3}, leftList)
-		assert.Equal(t, []int{2, 4}, rightList)
 	})
 }
