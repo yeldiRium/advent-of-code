@@ -18,6 +18,6 @@ func main() {
 		panic(err)
 	}
 
-	count := day2.CountSafeReports(reports, false)
+	count := day2.CountSafeReports(reports, true)
 	fmt.Printf("%d", count)
 }
