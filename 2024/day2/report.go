@@ -15,16 +15,10 @@ func CountSafeReports(reports []Report) int {
 }
 
 func ReportSafety(report Report) (safe bool) {
-	unsafeLevels := CountUnsafeLevels(report)
-
-	return unsafeLevels == 0
-}
-
-func CountUnsafeLevels(report Report) int {
 	derived := derivation(report)
 
 	if len(derived) == 0 {
-		return 0
+		return true
 	}
 
 	lowerBound := 1
@@ -34,15 +28,13 @@ func CountUnsafeLevels(report Report) int {
 		upperBound = -1
 	}
 
-	unsafeLevelCount := 0
-
 	for _, value := range derived {
 		if value < lowerBound || value > upperBound {
-			unsafeLevelCount += 1
+			return false
 		}
 	}
 
-	return unsafeLevelCount
+	return true
 }
 
 func derivation(values []int) []int {
