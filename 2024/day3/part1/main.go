@@ -19,7 +19,8 @@ func main() {
 		panic(err)
 	}
 
-	multiplicationInstructions := day3.ParseMulInstructions(string(inputText))
+	instructions := day3.ParseInstructions(string(inputText))
+	multiplicationInstructions := day3.GetAllMultiplicationInstructions(instructions)
 	sum := day3.SumProducts(multiplicationInstructions)
 
 	fmt.Printf("%d", sum)

@@ -8,51 +8,91 @@ import (
 	"github.com/yeldiRium/advent-of-code/2024/day3"
 )
 
-func TestParseMulInstructions(t *testing.T) {
-	t.Run("correctly identifies mul instructions and discards the rest.", func(t *testing.T) {
+func TestParseInstructions(t *testing.T) {
+	t.Run("correctly identifies mul/do/don't instructions and discards the rest.", func(t *testing.T) {
 		type testCase struct {
 			input                string
-			expectedInstructions []day3.MulInstruction
+			expectedInstructions []interface{}
 		}
 
 		testCases := []testCase{
 			{
 				input:                "",
-				expectedInstructions: []day3.MulInstruction{},
+				expectedInstructions: []interface{}{},
 			},
 			{
 				input: "mul(5,17)",
-				expectedInstructions: []day3.MulInstruction{
-					{X: 5, Y: 17},
+				expectedInstructions: []interface{}{
+					day3.MulInstruction{X: 5, Y: 17},
 				},
 			},
 			{
 				input: "mul(5, 17)",
-				expectedInstructions: []day3.MulInstruction{},
+				expectedInstructions: []interface{}{},
 			},
 			{
 				input: "mul(5,17",
-				expectedInstructions: []day3.MulInstruction{},
+				expectedInstructions: []interface{}{},
 			},
 			{
 				input: "mul(5,17)\nexqlmulnqex98mul(2,8)8392e:(}=‚mul[517]mul(12)89e32nmul(\n15,200)",
-				expectedInstructions: []day3.MulInstruction{
-					{X:5, Y:17},
-					{X:2, Y:8},
+				expectedInstructions: []interface{}{
+					day3.MulInstruction{X:5, Y:17},
+					day3.MulInstruction{X:2, Y:8},
 				},
 			},
 			{
 				input: "mul(5,1017)",
-				expectedInstructions: []day3.MulInstruction{},
+				expectedInstructions: []interface{}{},
+			},
+			{
+				input: "",
+				expectedInstructions: []interface{}{},
 			},
 		}
 		for i, testCase := range testCases {
 			t.Run(fmt.Sprintf("Test case %d:", i), func(t *testing.T) {
-				result := day3.ParseMulInstructions(testCase.input)
+				result := day3.ParseInstructions(testCase.input)
 				assert.Equal(t, testCase.expectedInstructions, result)
 			})
 		}
 	})
+}
+
+func TestGetAllMultiplicationInstructions(t *testing.T) {
+	t.Run("returns all contained multiplications instructions.", func(t *testing.T) {
+		input := []interface{}{
+			day3.MulInstruction{
+				X: 5, Y: 7,
+			},
+			day3.DoInstruction{},
+			day3.MulInstruction{
+				X: 312, Y: 18,
+			},
+			day3.DontInstruction{},
+			day3.DontInstruction{},
+			day3.DoInstruction{},
+			day3.MulInstruction{
+				X: 312, Y: 18,
+			},
+		}
+
+		result := day3.GetAllMultiplicationInstructions(input)
+		assert.Equal(t, []day3.MulInstruction{
+			day3.MulInstruction{
+				X: 5, Y: 7,
+			},
+			day3.MulInstruction{
+				X: 312, Y: 18,
+			},
+			day3.MulInstruction{
+				X: 312, Y: 18,
+			},
+		}, result)
+	})
+}
+
+func TestGetAllEnabledMultiplicationInstructions(t *testing.T) {
 }
 
 func TestSumProducts(t *testing.T) {
