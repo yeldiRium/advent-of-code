@@ -1,4 +1,4 @@
-package common
+package day1
 
 func CountOccurences(list []int) map[int]int {
 	counts := make(map[int]int)

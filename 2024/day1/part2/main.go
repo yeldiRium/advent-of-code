@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/yeldiRium/advent-of-code/2024/day1/common"
+	"github.com/yeldiRium/advent-of-code/2024/day1"
 )
 
 
@@ -15,12 +15,12 @@ func main() {
 	}
 	defer inputFile.Close()
 
-	leftList, rightList, err := common.ParseInputLists(inputFile)
+	leftList, rightList, err := day1.ParseInputLists(inputFile)
 	if err != nil {
 		panic(err)
 	}
 
-	similarity := common.Similarity(leftList, rightList)
+	similarity := day1.Similarity(leftList, rightList)
 
 	fmt.Printf("%d", similarity)
 }

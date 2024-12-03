@@ -1,4 +1,4 @@
-package common_test
+package day1_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/yeldiRium/advent-of-code/2024/day1/common"
+	"github.com/yeldiRium/advent-of-code/2024/day1"
 )
 
 func TestDistance(t *testing.T) {
@@ -31,7 +31,7 @@ func TestDistance(t *testing.T) {
 		}
 		for i, testCase := range testCases {
 			t.Run(fmt.Sprintf("Test case %d", i), func(t *testing.T) {
-				actualDistance := common.Distance(testCase.leftList, testCase.rightList)
+				actualDistance := day1.Distance(testCase.leftList, testCase.rightList)
 
 				assert.Equal(t, testCase.expectedDistance, actualDistance)
 			})
@@ -40,7 +40,7 @@ func TestDistance(t *testing.T) {
 
 	t.Run("panics if the input lists aren't the same length.", func(t *testing.T) {
 		assert.Panics(t, func() {
-			common.Distance([]int{1, 2}, []int{1, 2, 3})
+			day1.Distance([]int{1, 2}, []int{1, 2, 3})
 		})
 	})
 }

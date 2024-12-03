@@ -1,16 +1,16 @@
-package common_test
+package day1_test
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/yeldiRium/advent-of-code/2024/day1/common"
+	"github.com/yeldiRium/advent-of-code/2024/day1"
 )
 
 func TestCountOccurences(t *testing.T) {
 	t.Run("returns an empty map if the input is empty.", func(t *testing.T) {
-		result := common.CountOccurences([]int{})
+		result := day1.CountOccurences([]int{})
 
 		assert.Equal(t, map[int]int{}, result)
 	})
@@ -29,7 +29,7 @@ func TestCountOccurences(t *testing.T) {
 		}
 		for i, testCase := range testCases {
 			t.Run(fmt.Sprintf("Test case %d", i), func(t *testing.T) {
-				result := common.CountOccurences(testCase.input)
+				result := day1.CountOccurences(testCase.input)
 
 				assert.Equal(t, testCase.expectedCounts, result)
 			})
@@ -54,7 +54,7 @@ func TestSimilarity(t *testing.T) {
 		}
 		for i, testCase := range testCases {
 			t.Run(fmt.Sprintf("Test case %d", i), func(t *testing.T) {
-				result := common.Similarity(testCase.leftList, testCase.rightList)
+				result := day1.Similarity(testCase.leftList, testCase.rightList)
 
 				assert.Equal(t, testCase.expectedSimilarity, result)
 			})
@@ -63,7 +63,7 @@ func TestSimilarity(t *testing.T) {
 
 	t.Run("panics if the input lists have different lengths.", func(t *testing.T) {
 		assert.Panics(t, func() {
-			common.Similarity([]int{1, 2}, []int{1, 2, 3})
+			day1.Similarity([]int{1, 2}, []int{1, 2, 3})
 		})
 	})
 }

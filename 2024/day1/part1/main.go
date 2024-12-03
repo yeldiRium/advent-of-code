@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/yeldiRium/advent-of-code/2024/day1/common"
+	"github.com/yeldiRium/advent-of-code/2024/day1"
 )
 
 func main() {
@@ -14,12 +14,12 @@ func main() {
 	}
 	defer inputFile.Close()
 
-	leftList, rightList, err := common.ParseInputLists(inputFile)
+	leftList, rightList, err := day1.ParseInputLists(inputFile)
 	if err != nil {
 		panic(err)
 	}
 
-	distance := common.Distance(leftList, rightList)
+	distance := day1.Distance(leftList, rightList)
 
 	fmt.Printf("%d", distance)
 }
