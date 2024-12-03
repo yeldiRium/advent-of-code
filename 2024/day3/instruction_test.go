@@ -46,8 +46,14 @@ func TestParseInstructions(t *testing.T) {
 				expectedInstructions: []interface{}{},
 			},
 			{
-				input: "",
-				expectedInstructions: []interface{}{},
+				input: "do()don't()mul(5,8)",
+				expectedInstructions: []interface{}{
+					day3.DoInstruction{},
+					day3.DontInstruction{},
+					day3.MulInstruction{
+						X: 5, Y: 8,
+					},
+				},
 			},
 		}
 		for i, testCase := range testCases {
@@ -93,6 +99,34 @@ func TestGetAllMultiplicationInstructions(t *testing.T) {
 }
 
 func TestGetAllEnabledMultiplicationInstructions(t *testing.T) {
+	t.Run("returns all contained multiplication instructions that are enable - i.e. they do not follow a dont instruction without another do instruction.", func(t *testing.T) {
+		input := []interface{}{
+			day3.MulInstruction{
+				X: 2, Y: 4,
+			},
+			day3.DontInstruction{},
+			day3.MulInstruction{
+				X: 5, Y: 5,
+			},
+			day3.MulInstruction{
+				X: 11, Y: 8,
+			},
+			day3.DoInstruction{},
+			day3.MulInstruction{
+				X: 8, Y: 5,
+			},
+		}
+
+		result := day3.GetAllEnabledMultiplicationInstructions(input)
+		assert.Equal(t, []day3.MulInstruction{
+			day3.MulInstruction{
+				X: 2, Y: 4,
+			},
+			day3.MulInstruction{
+				X: 8, Y: 5,
+			},
+		}, result)
+	})
 }
 
 func TestSumProducts(t *testing.T) {
