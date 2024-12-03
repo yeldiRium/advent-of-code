@@ -6,7 +6,7 @@ func CountSafeReports(reports []Report, dampen bool) int {
 	safeReports := 0
 
 	for _, report := range reports {
-		if ReportSafety(report, dampen) {
+		if ReportSafe(report, dampen) {
 			safeReports += 1
 		}
 	}
@@ -14,7 +14,7 @@ func CountSafeReports(reports []Report, dampen bool) int {
 	return safeReports
 }
 
-func ReportSafety(report Report, dampen bool) (safe bool) {
+func ReportSafe(report Report, dampen bool) (safe bool) {
 	if len(report) <= 1 {
 		return true
 	}
@@ -48,21 +48,21 @@ func ReportSafety(report Report, dampen bool) (safe bool) {
 		//    Removing the level at i-1 fixes this.
 		option1 := make([]int, len(report)-1)
 		copy(option1, report[1:])
-		if ReportSafety(option1, false) {
+		if ReportSafe(option1, false) {
 			return true
 		}
 
 		option2 := make([]int, len(report)-1)
 		copy(option2[:i], report[:i])
 		copy(option2[i:], report[i+1:])
-		if ReportSafety(option2, false) {
+		if ReportSafe(option2, false) {
 			return true
 		}
 
 		option3 := make([]int, len(report)-1)
 		copy(option3[:i-1], report[:i-1])
 		copy(option3[i-1:], report[i:])
-		if ReportSafety(option3, false) {
+		if ReportSafe(option3, false) {
 			return true
 		}
 

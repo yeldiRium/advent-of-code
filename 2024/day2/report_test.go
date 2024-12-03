@@ -8,7 +8,7 @@ import (
 	"github.com/yeldiRium/advent-of-code/2024/day2"
 )
 
-func TestReportSafety(t *testing.T) {
+func TestReportSafe(t *testing.T) {
 	t.Run("succeeds for various examples.", func(t *testing.T) {
 		type testCase struct {
 			report         day2.Report
@@ -64,7 +64,7 @@ func TestReportSafety(t *testing.T) {
 
 		for i, testCase := range testCases {
 			t.Run(fmt.Sprintf("Test case %d:", i), func(t *testing.T) {
-				result := day2.ReportSafety(testCase.report, false)
+				result := day2.ReportSafe(testCase.report, false)
 
 				assert.Equal(t, testCase.expectedResult, result)
 			})
@@ -72,7 +72,7 @@ func TestReportSafety(t *testing.T) {
 	})
 }
 
-func TestReportSafetyDampened(t *testing.T) {
+func TestReportSafeDampened(t *testing.T) {
 	t.Run("succeeds for various examples.", func(t *testing.T) {
 		type testCase struct {
 			report         day2.Report
@@ -140,7 +140,7 @@ func TestReportSafetyDampened(t *testing.T) {
 
 		for i, testCase := range testCases {
 			t.Run(fmt.Sprintf("Test case %d:", i), func(t *testing.T) {
-				result := day2.ReportSafety(testCase.report, true)
+				result := day2.ReportSafe(testCase.report, true)
 
 				assert.Equal(t, testCase.expectedResult, result)
 			})
