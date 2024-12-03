@@ -39,13 +39,21 @@ func ReportSafe(report Report, dampen bool) (safe bool) {
 			return false
 		}
 
-		// We have encountered an unsafe level. There are three possible causes for this:
+		// We have encountered an unsafe level and want to dampen. There are three possible causes for this:
 		// 1) The first two levels lead us to falsely believe the elements should ascend/descend.
 		//    Removing the first level fixes this.
 		// 2) The level at i is unsafe. E.g. 1, 2, 6, 3, where i is 2.
 		//    Removing the level at i fixes this.
 		// 3) The level at i-1 is unsafe. E.g. 1, 4, 2, 3, where i is 2.
 		//    Removing the level at i-1 fixes this.
+		//
+		// Implementing this by checking all three options adds constant overhead, which is fine, I guess. Resulting time
+		// complexity is O(n). It does not feel optimal.
+		//
+		// Alternative implementations would have been:
+		// - Instead of checking the three individual options, try omitting each element of the report until a safe configu-
+		//   ration is found. This would have slightly reduced code complexity, but increased time complexity to O(n^2)
+
 		option1 := make([]int, len(report)-1)
 		copy(option1, report[1:])
 		if ReportSafe(option1, false) {
