@@ -27,7 +27,7 @@ func (grid Grid) Height() uint {
 	return uint(len(grid[0]))
 }
 
-func (grid Grid) RuneAt(x, y int) rune {
+func (grid Grid) RuneAt(x, y uint) rune {
 	return grid[x][y]
 }
 
