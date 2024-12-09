@@ -157,3 +157,22 @@ func (grid Grid) DiagonalSWWindows(size uint) iter.Seq[[]Coordinate] {
 		}
 	}
 }
+
+// X3 iterates X-es in the grid with a diagonal length of three.
+// I.e. in a grid of size 3x3 the resulting X is:
+//
+// X.X
+// .X.
+// X.X
+//
+// The produced coordinates are each the top-left coordinate of
+// an X in the grid.
+func (grid Grid) X3() iter.Seq[Coordinate] {
+	return func(yield func(value Coordinate) bool) {
+		for diagonal := range grid.DiagonalSEWindows(3) {
+			if !yield(diagonal[0]) {
+				return
+			}
+		}
+	}
+}
