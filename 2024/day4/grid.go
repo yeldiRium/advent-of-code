@@ -9,9 +9,9 @@ type Coordinate struct {
 	X, Y uint
 }
 
-func NewGrid(width, height int) Grid {
+func NewGrid(width, height uint) Grid {
 	grid := make([][]rune, width)
-	for i := 0; i < width; i++ {
+	for i := uint(0); i < width; i++ {
 		grid[i] = make([]rune, height)
 	}
 	return grid
@@ -31,16 +31,41 @@ func (grid Grid) RuneAt(x, y int) rune {
 	return grid[x][y]
 }
 
-func (grid Grid) HorizontalWindows(length uint) iter.Seq[[]Coordinate] {
+func (grid Grid) Windows(size uint) iter.Seq[[]Coordinate] {
 	return func(yield func(value []Coordinate) bool) {
-		if grid.Width() < length {
+		for window := range grid.HorizontalWindows(size) {
+			if !yield(window) {
+				return
+			}
+		}
+		for window := range grid.VerticalWindows(size) {
+			if !yield(window) {
+				return
+			}
+		}
+		for window := range grid.DiagonalSEWindows(size) {
+			if !yield(window) {
+				return
+			}
+		}
+		for window := range grid.DiagonalSWWindows(size) {
+			if !yield(window) {
+				return
+			}
+		}
+	}
+}
+
+func (grid Grid) HorizontalWindows(size uint) iter.Seq[[]Coordinate] {
+	return func(yield func(value []Coordinate) bool) {
+		if grid.Width() < size {
 			return
 		}
 
 		for y := uint(0); y < grid.Height(); y++ {
-			for x := uint(0); x < grid.Width()-length+1; x++ {
-				window := make([]Coordinate, length)
-				for i := uint(0); i < length; i++ {
+			for x := uint(0); x < grid.Width()-size+1; x++ {
+				window := make([]Coordinate, size)
+				for i := uint(0); i < size; i++ {
 					window[i] = Coordinate{
 						X: x + i,
 						Y: y,
@@ -55,16 +80,16 @@ func (grid Grid) HorizontalWindows(length uint) iter.Seq[[]Coordinate] {
 	}
 }
 
-func (grid Grid) VerticalWindows(length uint) iter.Seq[[]Coordinate] {
+func (grid Grid) VerticalWindows(size uint) iter.Seq[[]Coordinate] {
 	return func(yield func(value []Coordinate) bool) {
-		if grid.Height() < length {
+		if grid.Height() < size {
 			return
 		}
 
-		for y := uint(0); y < grid.Height()-length+1; y++ {
+		for y := uint(0); y < grid.Height()-size+1; y++ {
 			for x := uint(0); x < grid.Width(); x++ {
-				window := make([]Coordinate, length)
-				for i := uint(0); i < length; i++ {
+				window := make([]Coordinate, size)
+				for i := uint(0); i < size; i++ {
 					window[i] = Coordinate{
 						X: x,
 						Y: y + i,
@@ -81,17 +106,17 @@ func (grid Grid) VerticalWindows(length uint) iter.Seq[[]Coordinate] {
 
 // DiagonalSEWindows iterates diagonal windows that are oriented from
 // north-west toward south-east.
-func (grid Grid) DiagonalSEWindows(length uint) iter.Seq[[]Coordinate] {
+func (grid Grid) DiagonalSEWindows(size uint) iter.Seq[[]Coordinate] {
 	return func(yield func(value []Coordinate) bool) {
-		if grid.Height() < length || grid.Width() < length {
+		if grid.Height() < size || grid.Width() < size {
 			return
 		}
 
-		for y := uint(0); y < grid.Height()-length+1; y++ {
-			for x := uint(0); x < grid.Width()-length+1; x++ {
-				window := make([]Coordinate, length)
+		for y := uint(0); y < grid.Height()-size+1; y++ {
+			for x := uint(0); x < grid.Width()-size+1; x++ {
+				window := make([]Coordinate, size)
 
-				for i := uint(0); i < length; i++ {
+				for i := uint(0); i < size; i++ {
 					window[i] = Coordinate{
 						X: x + i,
 						Y: y + i,
@@ -108,19 +133,19 @@ func (grid Grid) DiagonalSEWindows(length uint) iter.Seq[[]Coordinate] {
 
 // DiagonalSWWindows iterates diagonal windows that are oriented from
 // north-east toward south-west.
-func (grid Grid) DiagonalSWWindows(length uint) iter.Seq[[]Coordinate] {
+func (grid Grid) DiagonalSWWindows(size uint) iter.Seq[[]Coordinate] {
 	return func(yield func(value []Coordinate) bool) {
-		if grid.Height() < length || grid.Width() < length {
+		if grid.Height() < size || grid.Width() < size {
 			return
 		}
 
-		for y := uint(0); y < grid.Height()-length+1; y++ {
-			for x := uint(0); x < grid.Width()-length+1; x++ {
-				window := make([]Coordinate, length)
+		for y := uint(0); y < grid.Height()-size+1; y++ {
+			for x := uint(0); x < grid.Width()-size+1; x++ {
+				window := make([]Coordinate, size)
 
-				for i := uint(0); i < length; i++ {
+				for i := uint(0); i < size; i++ {
 					window[i] = Coordinate{
-						X: x - i + length - 1,
+						X: x - i + size - 1,
 						Y: y + i,
 					}
 				}
