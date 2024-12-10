@@ -8,31 +8,31 @@ import (
 	"github.com/yeldiRium/advent-of-code/2024/day5"
 )
 
-func TestIsInOrder(t *testing.T) {
-	commonRuleBook := day5.RuleBook{
-		{Earlier: 47, Later: 53},
-		{Earlier: 97, Later: 13},
-		{Earlier: 97, Later: 61},
-		{Earlier: 97, Later: 47},
-		{Earlier: 75, Later: 29},
-		{Earlier: 61, Later: 13},
-		{Earlier: 75, Later: 53},
-		{Earlier: 29, Later: 13},
-		{Earlier: 97, Later: 29},
-		{Earlier: 53, Later: 29},
-		{Earlier: 61, Later: 53},
-		{Earlier: 97, Later: 53},
-		{Earlier: 61, Later: 29},
-		{Earlier: 47, Later: 13},
-		{Earlier: 75, Later: 47},
-		{Earlier: 97, Later: 75},
-		{Earlier: 47, Later: 61},
-		{Earlier: 75, Later: 61},
-		{Earlier: 47, Later: 29},
-		{Earlier: 75, Later: 13},
-		{Earlier: 53, Later: 13},
-	}
+var commonRuleBook = day5.RuleBook{
+	{Earlier: 47, Later: 53},
+	{Earlier: 97, Later: 13},
+	{Earlier: 97, Later: 61},
+	{Earlier: 97, Later: 47},
+	{Earlier: 75, Later: 29},
+	{Earlier: 61, Later: 13},
+	{Earlier: 75, Later: 53},
+	{Earlier: 29, Later: 13},
+	{Earlier: 97, Later: 29},
+	{Earlier: 53, Later: 29},
+	{Earlier: 61, Later: 53},
+	{Earlier: 97, Later: 53},
+	{Earlier: 61, Later: 29},
+	{Earlier: 47, Later: 13},
+	{Earlier: 75, Later: 47},
+	{Earlier: 97, Later: 75},
+	{Earlier: 47, Later: 61},
+	{Earlier: 75, Later: 61},
+	{Earlier: 47, Later: 29},
+	{Earlier: 75, Later: 13},
+	{Earlier: 53, Later: 13},
+}
 
+func TestIsInOrder(t *testing.T) {
 	t.Run("returns true for an empty list of elements.", func(t *testing.T) {
 		elements := []int{}
 		ruleBook := day5.RuleBook{
@@ -104,5 +104,68 @@ func TestIsInOrder(t *testing.T) {
 				assert.False(t, result)
 			})
 		}
+	})
+}
+
+func TestSort(t *testing.T) {
+	t.Run("sorts an empty slice into an empty slice.", func(t *testing.T) {
+		input := []int{}
+
+		result, err := day5.Sort(input, commonRuleBook)
+
+		assert.NoError(t, err)
+		assert.Equal(t, []int{}, result)
+	})
+
+	t.Run("sorts inputs according to the given rule book.", func(t *testing.T) {
+		type testCase struct {
+			elements       []int
+			ruleBook       day5.RuleBook
+			expectedOutput []int
+		}
+
+		testCases := []testCase{
+			{
+				elements:       []int{75, 47, 61, 53, 29},
+				ruleBook:       commonRuleBook,
+				expectedOutput: []int{75, 47, 61, 53, 29},
+			},
+			{
+				elements:       []int{75, 97, 47, 61, 53},
+				ruleBook:       commonRuleBook,
+				expectedOutput: []int{97, 75, 47, 61, 53},
+			},
+			{
+				elements:       []int{61, 13, 29},
+				ruleBook:       commonRuleBook,
+				expectedOutput: []int{61, 29, 13},
+			},
+			{
+				elements:       []int{97, 13, 75, 29, 47},
+				ruleBook:       commonRuleBook,
+				expectedOutput: []int{97, 75, 47, 29, 13},
+			},
+		}
+		for i, testCase := range testCases {
+			t.Run(fmt.Sprintf("Test case %d:", i), func(t *testing.T) {
+				output, err := day5.Sort(testCase.elements, testCase.ruleBook)
+
+				assert.NoError(t, err)
+				assert.Equal(t, testCase.expectedOutput, output)
+			})
+		}
+	})
+
+	t.Run("returns an error if the rule book can not be satisfied by the elements.", func(t *testing.T) {
+		elements := []int{2, 5, 8}
+		ruleBook := day5.RuleBook{
+			{Earlier: 2, Later: 5},
+			{Earlier: 5, Later: 8},
+			{Earlier: 8, Later: 2},
+		}
+
+		_, err := day5.Sort(elements, ruleBook)
+
+		assert.Error(t, err)
 	})
 }
