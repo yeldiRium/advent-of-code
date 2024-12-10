@@ -37,7 +37,8 @@ func TestParseInput(t *testing.T) {
 75,29,13
 75,97,47,61,53
 61,13,29
-97,13,75,29,47`
+97,13,75,29,47
+`
 
 		expectedRuleBook := day5.RuleBook{
 			{Earlier: 47, Later: 53},

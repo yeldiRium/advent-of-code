@@ -46,6 +46,11 @@ func ParseInput(input io.Reader) (RuleBook, [][]int, error) {
 		line := lines[index]
 		index += 1
 
+		// There might be a newline at the end, which makes the last line empty.
+		if line == "" {
+			break
+		}
+
 		parsedLine, err := parseLine(line)
 		if err != nil {
 			return nil, nil, err
